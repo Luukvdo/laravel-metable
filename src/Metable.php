@@ -275,19 +275,34 @@ trait Metable
      * @param Builder $q
      * @param string  $key
      * @param array   $values
+     * @param bool    $not
      *
      * @return void
      */
-    public function scopeWhereMetaIn(Builder $q, string $key, array $values)
+    public function scopeWhereMetaIn(Builder $q, string $key, array $values, $not = false)
     {
         $values = array_map(function ($val) use ($key) {
             return is_string($val) ? $val : $this->makeMeta($key, $val)->getRawValue();
         }, $values);
 
-        $q->whereHas('meta', function (Builder $q) use ($key, $values) {
+        $q->whereHas('meta', function (Builder $q) use ($key, $values, $not) {
             $q->where('key', $key);
-            $q->whereIn('value', $values);
+            $q->whereIn('value', $values, 'and', $not);
         });
+    }
+
+    /**
+     * Query scope to restrict the query to records which don't have `Meta` with a specific key and a value within a specified set of options.
+     *
+     * @param Builder $q
+     * @param string  $key
+     * @param array   $values
+     *
+     * @return void
+     */
+    public function scopeWhereMetaNotIn(Builder $q, string $key, array $values)
+    {
+        $this->scopeWhereMetaIn($q, $key, $values, true);
     }
 
     /**

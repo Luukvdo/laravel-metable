@@ -252,6 +252,19 @@ class MetableTest extends TestCase
         $this->assertNull($result2);
     }
 
+    public function test_it_can_be_queried_by_not_in_array()
+    {
+        $this->useDatabase();
+        $metable = factory(SampleMetable::class)->create();
+        $metable->setMeta('foo', 'bar');
+
+        $result1 = SampleMetable::whereMetaNotIn('foo', ['baz', 'bar'])->first();
+        $result2 = SampleMetable::whereMetaNotIn('foo', ['baz', 'bat'])->first();
+
+        $this->assertNull($result1);
+        $this->assertEquals($metable->getKey(), $result2->getKey());
+    }
+
     public function test_it_can_order_query_by_meta_value()
     {
         $this->useDatabase();

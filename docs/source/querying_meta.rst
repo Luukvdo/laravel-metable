@@ -58,7 +58,15 @@ The ``whereMetaIn()`` method is also available to find records where the value i
     $models = MyModel::whereMetaIn('country', ['CAN', 'USA', 'MEX']);
 
 
-The ``whereMeta()`` and ``whereMetaIn()`` methods perform string comparison (lexicographic ordering). Any non-string values passed to these methods will be serialized to a string. This is useful for evaluating equality (``=``) or inequality (``<>``), but may behave unpredictably with some other operators for non-string data types.
+The ``whereMetaNotIn()`` method is the inverse of ``whereMetaIn()`` to find records where the value does not match a predefined set of options.
+
+::
+
+    <?php
+    $models = MyModel::whereMetaNotIn('country', ['CAN', 'USA', 'MEX']);
+
+
+The ``whereMeta()``, ``whereMetaIn()`` and ``whereMetaNotIn()`` methods perform string comparison (lexicographic ordering). Any non-string values passed to these methods will be serialized to a string. This is useful for evaluating equality (``=``) or inequality (``<>``), but may behave unpredictably with some other operators for non-string data types.
 
 ::
 
